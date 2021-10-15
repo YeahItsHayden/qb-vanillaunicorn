@@ -50,7 +50,7 @@ setupContext = function()
             params = {
                 event = "qb-vanillaunicorn:purchaseDrink",
                 args = {
-                    pass = Config.Drinks['coke'],
+                    type = Config.Drinks['coke'],
                 }
             }
         },
@@ -61,7 +61,7 @@ setupContext = function()
             params = {
                 event = "qb-vanillaunicorn:purchaseDrink",
                 args = {
-                    pass = Config.Drinks['whiskey'],
+                    type = Config.Drinks['whiskey'],
                 }
             }
         },
@@ -72,7 +72,7 @@ setupContext = function()
             params = {
                 event = "qb-vanillaunicorn:purchaseDrink", 
                 args = {
-                    pass = Config.Drinks['rum'],
+                    type = Config.Drinks['rum'],
                 }
             }
         },
@@ -83,7 +83,7 @@ setupContext = function()
             params = {
                 event = "qb-vanillaunicorn:purchaseDrink",
                 args = {
-                    pass = Config.Drinks['vodka'],
+                    type = Config.Drinks['vodka'],
                 }
             }
         },

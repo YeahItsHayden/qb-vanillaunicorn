@@ -29,8 +29,8 @@ n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit 
 end)
 
 n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit check
-    type = data.pass 
-    name = type.name
+    name = data.type.name
+    price = data.type.price
 
     barConfirmation = {
         {
@@ -41,14 +41,14 @@ n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit 
         {
             id = 2,
             header = t['yes'],
-            txt = 'This will cost $' .. type.price,
+            txt = 'This will cost $' .. price .. '',
             params = {
                 isServer = true,
                 event = "qb-vanillaunicorn:handleItem",
                 args = {
-                    type = type.item,
-                    amount = type.amount, 
-                    price = type.price, 
+                    type = data.type.item,
+                    amount = data.type.amount, 
+                    price = data.type.price, 
                 }
             }
         },
