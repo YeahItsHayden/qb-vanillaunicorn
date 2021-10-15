@@ -1,6 +1,7 @@
 QBCore = exports['qb-core']:GetCoreObject()
+n = RegisterNetEvent -- I'm lazy
 
-RegisterNetEvent('qb-vanillaunicorn:handleItem', function(data)
+n('qb-vanillaunicorn:handleItem', function(data)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = data.type 
