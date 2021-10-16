@@ -1,5 +1,5 @@
-madePed = false
-
+madeBar = false
+madeBoss = false
 
 setupContext = function()
     bossMenu = {
@@ -110,12 +110,35 @@ setupContext = function()
             distance = 5.0
     })
 
+    exports['qb-target']:AddTargetModel(Config.bossHash, {
+        options = {
+            {
+                event = "qb-vanillaunicorn:employeeManagement",
+                icon = "fas fa-sack-dollar",
+                label = "Open Employee Management",
+                canInteract = function() -- Have yet to implement the actual job 
+                    local ped = PlayerPedId()
+                    local pos = GetEntityCoords(ped)
+                    print("Debug 1")
+                    if #(pos - Config.bossCoords) <= 10 then
+                        print("returning true") 
+                        return true 
+                    else
+                        print("returning false")
+                        return false
+                    end
+                end, 
+            },
+        },
+        distance = 5.0,
+    })
+
     while true do 
-        Wait(5000)
+        Wait(1000)
         plyCoords = GetEntityCoords(ped)
 
         if #(plyCoords - barCoords) < 10 then
-            if not madePed then  
+            if not madeBar then  
 
                 RequestModel(barHash)
     
@@ -128,7 +151,7 @@ setupContext = function()
                 SetBlockingOfNonTemporaryEvents(bartender, true)
                 FreezeEntityPosition(bartender, true)
                 SetEntityInvincible(bartender, true)
-                madePed = true
+                madeBar = true
 
                 if Config.barPlayAnim then 
                     local dict = "amb@world_human_hang_out_street@male_c@idle_a"
@@ -151,8 +174,32 @@ setupContext = function()
             Wait(2000)
             SetEntityAsNoLongerNeeded(bartender)
             DeletePed(bartender)
-            madePed = false  
+            madeBar = false  
         end
+
+        if #(plyCoords - bossCoords) < 10 then 
+            if not madeBoss then  
+
+                RequestModel(barHash)
+    
+                while not HasModelLoaded(barHash) do
+                    Wait(1)
+                end
+                
+                boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, false)
+                SetEntityAsMissionEntity(boss, true, true)
+                SetBlockingOfNonTemporaryEvents(boss, true)
+                FreezeEntityPosition(boss, true)
+                SetEntityInvincible(boss, true)
+                madeBoss = true
+            end
+        else
+            Wait(2000)
+            SetEntityAsNoLongerNeeded(boss)
+            DeletePed(boss)
+            madeBoss = false  
+        end
+
     end
 
 
