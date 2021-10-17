@@ -4,13 +4,8 @@ n = RegisterNetEvent -- I'm lazy
 t = Translation[Config.Translation] -- For translations (even lazier)
 ped = PlayerPedId() -- Player ped
 
-barCoords = Config.barCoords -- Coords for bar npc
-barHash = Config.barHash -- bar npc hash
-barHeading = Config.barHeading -- Heading of Bartender NPC
-
-bossCoords = Config.bossCoords -- Coords for the boss NPC
-bossHash = Config.bossHash -- bar npc hash
-bossHeading = Config.bossHeading -- Heading of Bartender NPC
+barSettings = Config.Settings['barSettings']
+bossSettings = Config.Settings['bossSettings']
 
 CreateThread(function() -- Thread to handle original context menu setup
     setupContext()
@@ -24,11 +19,15 @@ end
 
 n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit checks
     canUse = data.args.canUse
-    plyCoords = GetEntityCoords(ped) 
-    if canUse and #(plyCoords - barCoords) < 5 then 
-        exports["zf_context"]:openMenu(barMenu)
-    else
-        print("User is attempting to access menu whilst not near - exploit")
+    plyCoords = GetEntityCoords(ped)
+
+    for index = 1, #barSettings do
+        local barCoords = vector3(barSettings[index].coords.x, barSettings[index].coords.y, barSettings[index].coords.z)  
+        if canUse and #(plyCoords - barCoords) < 5 then 
+            exports["zf_context"]:openMenu(barMenu)
+        else
+            print("User is attempting to access menu whilst not near - exploit")
+        end
     end
 end)
 

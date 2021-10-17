@@ -10,7 +10,7 @@ n('qb-vanillaunicorn:handleItem', function(data)
     local plyCoords = GetEntityCoords(GetPlayerPed(src))
     local enough = Player.Functions.GetMoney('cash') >= price
 
-    if #(plyCoords - Config.barCoords) < 10 and item and amount and price then
+    if item and amount and price then
         if enough then 
             print("Giving item " .. item .. " which costs the player $" .. price)  
             Player.Functions.AddItem(item, amount, 10, nil) -- Adds the item
