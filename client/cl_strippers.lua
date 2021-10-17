@@ -48,7 +48,7 @@ setupStrippers = function()
                             SetModelAsNoLongerNeeded(stripperModelHash)
                             madeStrippers = true
                         else 
-                            DeletePed(stripperModelHash) 
+                            DeletePed(stripper1) 
                             madeStrippers = false
                         end 
                     end
