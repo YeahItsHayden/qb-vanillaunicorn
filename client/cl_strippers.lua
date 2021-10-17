@@ -1,4 +1,5 @@
 -- Please don't read down, it's a mess
+-- Still very much a WIP that i'll do later
 
 CreateThread(function()
     setupStrippers()

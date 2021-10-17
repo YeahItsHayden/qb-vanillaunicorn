@@ -74,8 +74,8 @@ Translation = {
         ['yes'] = "Yes",
         ['no'] = "No",
         -- Employee Management
-        ['employeeTitle'] = "Employee Management",
-        ['employeeHire'] = "Hire Employee",
-        ['employeeHireDesc'] = "Click here to hire an employee",
+        ['employeeTitle'] = "Boss Menu",
+        ['employeeHire'] = "Open Boss Menu",
+        ['employeeHireDesc'] = "Click here to open the boss menu",
     }
 }
