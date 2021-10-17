@@ -48,9 +48,9 @@ Coming Soon
 3) If you've never edited qb-bossmenu before, or have never touched it in general, please install my fork of it:
 	<br>
 	3a) [qb-bossmenu](https://github.com/YeahItsHayden/qb-bossmenu) This fork has all of the VU stuff added by default for you.<br>
-	3b) If you have edited qb-bossmenu before, follow these steps:<br>
-		- go into accounts.json, add another account labelled "vu":0, it should then look something like so:<br>
-			```{"realestate":0,"ambulance":10,"police":1000000,"taxi":0,"cardealer":0,"mechanic":0,"vu":0}```
+	3b) If you have edited qb-bossmenu before, follow these steps:<br><br>
+		- go into accounts.json, add another account labelled "vu":0, it should then look something like so:<br><br>
+			```{"realestate":0,"ambulance":10,"police":1000000,"taxi":0,"cardealer":0,"mechanic":0,"vu":0}```<br><br>
 		- Once completed, go to your config.lua and add this:<br>
 			['vu'] = vector3(93.84, -1291.87, 29.27)<br>
 		- Finally, within client.lua on line 170 > where it says "if #(pos - v) < 2.0" add the following:<br>
