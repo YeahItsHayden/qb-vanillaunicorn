@@ -51,10 +51,10 @@ Coming Soon
 	3b) If you have edited qb-bossmenu before, follow these steps:<br><br>
 		- go into accounts.json, add another account labelled "vu":0, it should then look something like so:<br><br>
 			```{"realestate":0,"ambulance":10,"police":1000000,"taxi":0,"cardealer":0,"mechanic":0,"vu":0}```<br><br>
-		- Once completed, go to your config.lua and add this:<br>
-			['vu'] = vector3(93.84, -1291.87, 29.27)<br>
-		- Finally, within client.lua on line 170 > where it says "if #(pos - v) < 2.0" add the following:<br>
-			```and not Config.Jobs['vu']``` so it should look like:<br> 	
+		- Once completed, go to your config.lua and add this:<br><br>
+			```['vu'] = vector3(93.84, -1291.87, 29.27)```<br><br>
+		- Finally, within client.lua on line 170 > where it says "if #(pos - v) < 2.0" add the following:<br><br>
+			```and not Config.Jobs['vu']``` so it should look like:<br><br> 	
 				```if #(pos - v) < 2.0 and not Config.Jobs['vu'] then```<br>
 
 4) That's pretty much it, enjoy utilising the VU!
