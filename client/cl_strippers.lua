@@ -45,7 +45,7 @@ setupStrippers = function()
                             SetEntityInvincible(stripper1, true)
                             SetBlockingOfNonTemporaryEvents(stripper1, true)
                             SetSynchronizedSceneLooped(scene1, 1)
-                            SetModelAsNoLongerNeeded(stripperModelHash)
+                            SetModelAsNoLongerNeeded(stripper1)
                             madeStrippers = true
                         else 
                             DeletePed(stripper1) 
