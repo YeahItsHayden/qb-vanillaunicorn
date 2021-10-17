@@ -13,10 +13,7 @@ setupContext = function()
             header = t['employeeHire'],
             txt = t['employeeHireDesc'],
             params = {
-                event = "",
-                args = {
-                    amount = 1
-                }
+                event = "qb-bossmenu:client:openMenu",
             }
         },
     }
@@ -89,8 +86,9 @@ setupContext = function()
         },
     }
 
-    for barIndex = 1, #barSettings do 
-        exports['qb-target']:AddTargetModel(barSettings[barIndex].hash, {
+    for i, v in pairs(settings) do
+        print(settings[i]['barSettings'].hash) 
+        exports['qb-target']:AddTargetModel(settings[i]['barSettings'].hash, {
             options = {
                 {
                     event = "qb-vanillaunicorn:accessBarMenu",
@@ -103,19 +101,15 @@ setupContext = function()
                         local ped = PlayerPedId()
                         local pos = GetEntityCoords(ped)
     
-                        for index = 1, #barSettings do
+                        local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)
 
-                            local barCoords = vector3(barSettings[index].coords.x, barSettings[index].coords.y, barSettings[index].coords.z)
-
-                            print(#(pos - barCoords))
-                            if #(pos - barCoords) <= 10 then
-                                print("returning true") 
-                                return true 
-                            elseif #(pos- barCoords) > 15 then 
-                                print("returning false")
-                                return false
-                            end
-
+                        print(#(pos - barCoords))
+                        if #(pos - barCoords) <= 10 then
+                            print("returning true") 
+                            return true 
+                        elseif #(pos- barCoords) > 15 then 
+                            print("returning false")
+                            return false
                         end
                     end, 
                 },
@@ -124,26 +118,25 @@ setupContext = function()
         })
     end
 
-    for bossIndex = 1, #bossSettings do 
-        exports['qb-target']:AddTargetModel(bossSettings[bossIndex].hash, {
+    for i, v in pairs(settings) do 
+        exports['qb-target']:AddTargetModel(settings[i]['bossSettings'].hash, {
             options = {
                 {
                     event = "qb-vanillaunicorn:employeeManagement",
                     icon = "fas fa-sack-dollar",
                     label = "Open Employee Management",
+                    job = settings[i]['bossSettings'].bossJob,
                     canInteract = function() -- Have yet to implement the actual job 
                         local ped = PlayerPedId()
                         local pos = GetEntityCoords(ped)
                        
-                        for index = 1, #bossSettings do
-                            local bossCoords = vector3(bossSettings[index].coords.x, bossSettings[index].coords.y, bossSettings[index].coords.z)
-                            if #(pos - bossCoords) <= 10 then
-                                print("returning true") 
-                                return true 
-                            else
-                                print("returning false")
-                                return false
-                            end
+                        local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)
+                        if #(pos - bossCoords) <= 10 then
+                            print("returning true") 
+                            return true 
+                        else
+                            print("returning false")
+                            return false
                         end
                     end, 
                 },
@@ -156,10 +149,10 @@ setupContext = function()
         Wait(1000)
         plyCoords = GetEntityCoords(ped)
 
-        for index = 1, #barSettings do
-            local barCoords = vector3(barSettings[index].coords.x, barSettings[index].coords.y, barSettings[index].coords.z)  
-            local barHash = barSettings[index].hash
-            local barHeading = barSettings[index].coords.w
+        for i, v in pairs(settings) do 
+            local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)  
+            local barHash = settings[i]['barSettings'].hash
+            local barHeading = settings[i]['barSettings'].coords.w
 
             if #(plyCoords - barCoords) < 25 then
                 if not madeBar then  
@@ -202,10 +195,10 @@ setupContext = function()
             end
         end
 
-        for index = 1, #bossSettings do
-            local bossCoords = vector3(bossSettings[index].coords.x, bossSettings[index].coords.y, bossSettings[index].coords.z)  
-            local bossHash = bossSettings[index].hash
-            local bossHeading = bossSettings[index].coords.w
+        for i, v in pairs(settings) do
+            local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)  
+            local bossHash = settings[i]['bossSettings'].hash
+            local bossHeading = settings[i]['bossSettings'].coords.w
             
 
             if #(plyCoords - bossCoords) < 25 then 
@@ -233,4 +226,25 @@ setupContext = function()
         end
 
     end
+end
+
+getClosestPlayer = function() -- Just taken from Qb-Policejob
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(PlayerPedId())
+
+    for i = 1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = #(pos - coords)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+    end
+
+    return closestPlayer, closestDistance
 end

@@ -3,9 +3,25 @@ QBCore = exports['qb-core']:GetCoreObject() -- Core
 n = RegisterNetEvent -- I'm lazy
 t = Translation[Config.Translation] -- For translations (even lazier)
 ped = PlayerPedId() -- Player ped
+isLoggedIn = false
+settings = Config.Settings
 
-barSettings = Config.Settings['barSettings']
-bossSettings = Config.Settings['bossSettings']
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+    PlayerData = QBCore.Functions.GetPlayerData()
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    isLoggedIn = false
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerData.job = JobInfo
+end)
 
 CreateThread(function() -- Thread to handle original context menu setup
     setupContext()
@@ -21,8 +37,8 @@ n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit 
     canUse = data.args.canUse
     plyCoords = GetEntityCoords(ped)
 
-    for index = 1, #barSettings do
-        local barCoords = vector3(barSettings[index].coords.x, barSettings[index].coords.y, barSettings[index].coords.z)  
+    for i, v in pairs(settings) do
+        local barCoords = vector3(settings[v]['barSettings'].coords.x, settings[v]['barSettings'].coords.y, settings[v]['barSettings'].coords.z)  
         if canUse and #(plyCoords - barCoords) < 5 then 
             exports["zf_context"]:openMenu(barMenu)
         else

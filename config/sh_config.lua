@@ -30,24 +30,28 @@ Config.Drinks = {
 }
 
 Config.Settings = {
-    ['duty'] = { -- On Duty Settings
-        [1] = {
+    ['vanillaUnicorn'] = {
+        ['duty'] = { -- On Duty Settings
             vector3(1,1,1)
-        }
-    },
-    ['bossSettings'] = { -- Boss Action Settings
-        [1] = {
+        },
+        ['bossSettings'] = { -- Boss Action Settings
             hash = `a_m_y_business_02`,
-            coords = vector4(92.97, -1292.39, 28.27, 298.99)
-        }
-    },
-    ['barSettings'] = { -- Bartender Settings
-        [1] = {
+            coords = vector4(92.97, -1292.39, 28.27, 298.99),
+            bossJob = 'vu' -- Name of the job that can access the boss menu
+        },
+        ['barSettings'] = { -- Bartender Settings
             hash = `a_m_y_business_02`,
             coords = vector4(128.72, -1282.9, 28.27, 123.15),
             playAnimation = true
+        },
+        ['strippers'] = { -- WIP
+            enabled = true, -- Enable Strippers
+            coords = {
+                vector4(112.43, -1286.53, 28.00, 317.46),
+                vector4(113.17, -1288.12, 28.00, 300.63),
+            }
         }
-    }
+    },
 }
 
 Config.Translation = 'en'
