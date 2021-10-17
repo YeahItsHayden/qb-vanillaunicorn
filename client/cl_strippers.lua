@@ -18,6 +18,8 @@ setupStrippers = function()
             local stripperSettings = settings[i]['strippers'].coords
 
             for i, v in pairs(stripperSettings) do
+                Wait(3000)
+
                 local stripper1 = CreatePed(1, stripperModelHash, v.x,  v.y,  v.z,  v.w, false, true)
                 local ad = "mini@strip_club@lap_dance_2g@ld_2g_p2"
             
