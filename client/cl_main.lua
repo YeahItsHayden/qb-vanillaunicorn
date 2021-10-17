@@ -3,23 +3,14 @@ QBCore = exports['qb-core']:GetCoreObject() -- Core
 n = RegisterNetEvent -- I'm lazy
 t = Translation[Config.Translation] -- For translations (even lazier)
 ped = PlayerPedId() -- Player ped
-isLoggedIn = false
 settings = Config.Settings
 
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
+n('QBCore:Client:OnPlayerLoaded', function() -- Core stuff
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate')
-AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+n('QBCore:Client:OnJobUpdate', function(JobInfo) -- Core stuff
     PlayerData.job = JobInfo
 end)
 
