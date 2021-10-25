@@ -11,11 +11,17 @@ n('QBCore:Client:OnPlayerLoaded', function() -- Core stuff
 end)
 
 n('QBCore:Client:OnJobUpdate', function(JobInfo) -- Core stuff
+    PlayerData = QBCore.Functions.GetPlayerData()
     PlayerData.job = JobInfo
 end)
 
 CreateThread(function() -- Thread to handle original context menu setup
-    setupContext()
+    while not LocalPlayer.state['isLoggedIn'] do
+        Wait(500)
+    end
+    if LocalPlayer.state['isLoggedIn'] then 
+        setupContext()
+    end
 end)
 
 if Config.debug then 
@@ -29,9 +35,9 @@ n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit 
     plyCoords = GetEntityCoords(ped)
 
     for i, v in pairs(settings) do
-        local barCoords = vector3(settings[v]['barSettings'].coords.x, settings[v]['barSettings'].coords.y, settings[v]['barSettings'].coords.z)  
+        local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)  
         if canUse and #(plyCoords - barCoords) < 5 then 
-            exports["zf_context"]:openMenu(barMenu)
+            exports["qb-menu"]:openMenu(barMenu)
         else
             print("User is attempting to access menu whilst not near - exploit")
         end
@@ -45,12 +51,10 @@ n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit 
     if name and price then 
         barConfirmation = {
             {
-                id = 1,
                 header = t['confirmDrink'] .. name .. "?",
-                txt = ' '
+                isMenuHeader = true,
             },
             {
-                id = 2,
                 header = t['yes'],
                 txt = 'This will cost $' .. price .. '',
                 params = {
@@ -64,25 +68,27 @@ n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit 
                 }
             },
             {
-                id = 3,
                 header = t['no'],
                 txt = ' ',
                 params = {
                     event = "",
                 }
             },
+            {
+                header = t['goBack']
+            },
         }
 
-        exports["zf_context"]:openMenu(barConfirmation)  
+        exports["qb-menu"]:openMenu(barConfirmation)  
     else
         print("How did you get here?")
     end
 end)
 
 n('qb-vanillaunicorn:barMenu', function() -- Open bar menu
-    exports["zf_context"]:openMenu(drinks)
+    exports["qb-menu"]:openMenu(drinks)
 end)
 
 n('qb-vanillaunicorn:employeeManagement', function() -- Open boss menu
-    exports["zf_context"]:openMenu(bossMenu)
+    exports["qb-menu"]:openMenu(bossMenu)
 end)

@@ -19,5 +19,5 @@ server_scripts {
 }
 
 dependencies {
-    'zf_context'
+    'qb-menu'
 }

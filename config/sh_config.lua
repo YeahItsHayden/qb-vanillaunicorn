@@ -37,6 +37,7 @@ Config.Settings = {
         ['bossSettings'] = { -- Boss Action Settings
             hash = `a_m_y_business_02`,
             coords = vector4(92.97, -1292.39, 28.27, 298.99),
+            spawnped = false, -- Spawn the boss ped? Leave as false for now (waiting for qb-bossmenu fix)
             bossJob = 'vu' -- Name of the job that can access the boss menu
         },
         ['barSettings'] = { -- Bartender Settings
@@ -77,5 +78,6 @@ Translation = {
         ['employeeTitle'] = "Boss Menu",
         ['employeeHire'] = "Open Boss Menu",
         ['employeeHireDesc'] = "Click here to open the boss menu",
+        ['goBack'] = "< Go Back",
     }
 }

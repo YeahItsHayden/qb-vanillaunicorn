@@ -2,11 +2,11 @@ madeBar = false
 madeBoss = false
 
 setupContext = function()
-    bossMenu = {
+    --[[bossMenu = {
         {
             id = 1,
             header = t['employeeTitle'],
-            txt = ' '
+            isMenuHeader = true,
         },
         {
             id = 2,
@@ -16,16 +16,14 @@ setupContext = function()
                 event = "qb-bossmenu:client:openMenu",
             }
         },
-    }
+    }--]] -- Not used currently, will be implemented better in the near future
 
     barMenu = {
         {
-            id = 1,
             header = t['barMenu'],
-            txt = ' '
+            isMenuHeader = true,
         },
         {
-            id = 2,
             header = t['browseDrinks'],
             txt = t['browseDesc'],
             params = {
@@ -34,14 +32,13 @@ setupContext = function()
         },
     }
 
+
     drinks = { -- read below on how to add more drinks
         {
-            id = 1,
             header = t['barMenu'],
-            txt = ' '
+            isMenuHeader = true,
         },
         {
-            id = 2, -- Unique ID
             header = t['coke'], -- Title of the drink
             txt = t['cokedesc'], -- short description
             params = {
@@ -52,7 +49,6 @@ setupContext = function()
             }
         },
         {
-            id = 3,
             header = t['whiskey'],
             txt = t['whiskeyDesc'],
             params = {
@@ -63,7 +59,6 @@ setupContext = function()
             }
         },
         {
-            id = 4,
             header = t['rum'],
             txt = t['rumDesc'],
             params = {
@@ -74,7 +69,6 @@ setupContext = function()
             }
         },
         {
-            id = 5,
             header = t['vodka'],
             txt = t['vodkaDesc'],
             params = {
@@ -83,6 +77,9 @@ setupContext = function()
                     type = Config.Drinks['vodka'],
                 }
             }
+        },
+        {
+            header = t['goBack'],
         },
     }
 
@@ -116,9 +113,7 @@ setupContext = function()
             },
             distance = 5.0,
         })
-    end
 
-    for i, v in pairs(settings) do 
         exports['qb-target']:AddTargetModel(settings[i]['bossSettings'].hash, {
             options = {
                 {
@@ -143,9 +138,10 @@ setupContext = function()
             },
             distance = 5.0,
         })
+
     end
 
-    while true do 
+    while true do
         Wait(1000)
         plyCoords = GetEntityCoords(ped)
 
@@ -196,32 +192,34 @@ setupContext = function()
         end
 
         for i, v in pairs(settings) do
-            local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)  
-            local bossHash = settings[i]['bossSettings'].hash
-            local bossHeading = settings[i]['bossSettings'].coords.w
+            if settings[i]['bossSettings'].spawnped then 
+                local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)  
+                local bossHash = settings[i]['bossSettings'].hash
+                local bossHeading = settings[i]['bossSettings'].coords.w
+                
+
+                if #(plyCoords - bossCoords) < 25 then 
+                    if not madeBoss then  
+
+                        RequestModel(bossHash)
             
-
-            if #(plyCoords - bossCoords) < 25 then 
-                if not madeBoss then  
-
-                    RequestModel(bossHash)
-        
-                    while not HasModelLoaded(bossHash) do
-                        Wait(1)
+                        while not HasModelLoaded(bossHash) do
+                            Wait(1)
+                        end
+                        
+                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, false)
+                        SetEntityAsMissionEntity(boss, true, true)
+                        SetBlockingOfNonTemporaryEvents(boss, true)
+                        FreezeEntityPosition(boss, true)
+                        SetEntityInvincible(boss, true)
+                        madeBoss = true
                     end
-                    
-                    boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, false)
-                    SetEntityAsMissionEntity(boss, true, true)
-                    SetBlockingOfNonTemporaryEvents(boss, true)
-                    FreezeEntityPosition(boss, true)
-                    SetEntityInvincible(boss, true)
-                    madeBoss = true
+                else
+                    Wait(2000)
+                    SetEntityAsNoLongerNeeded(boss)
+                    DeletePed(boss)
+                    madeBoss = false  
                 end
-            else
-                Wait(2000)
-                SetEntityAsNoLongerNeeded(boss)
-                DeletePed(boss)
-                madeBoss = false  
             end
         end
 
