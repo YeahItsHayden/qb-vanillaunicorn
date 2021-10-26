@@ -14,6 +14,8 @@ This resource is simple, with the idea of feature requests and improvements bein
 - Stashes
 - Toggle Duty
 - Complete qb-target & qb-menu support
+- Supports invoicing players, via the /invoice ID Amount command
+- Boss Menu implemented allowing for hiring, firing and storage management
 
 ## Upcoming
 - DJ Job support (I'm adding a DJ Job, I just haven't finished it)
@@ -59,4 +61,7 @@ This resource is simple, with the idea of feature requests and improvements bein
 to the end of the file, just under the mechanic job
 
 4) That's pretty much it, enjoy utilising the VU!
+
+## Issues?
+Having issues with the resource? Create an issue on the Github for support
 
