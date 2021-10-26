@@ -83,14 +83,14 @@ setupContext = function()
         },
     }
 
-    for i, v in pairs(settings) do
-        print(settings[i]['barSettings'].hash) 
-        exports['qb-target']:AddTargetModel(settings[i]['barSettings'].hash, {
+    for k, v in pairs(settings) do
+        print(settings[k]['barSettings'].hash) 
+        exports['qb-target']:AddTargetModel(settings[k]['barSettings'].hash, {
             options = {
                 {
                     event = "qb-vanillaunicorn:Client:accessBarMenu",
                     icon = "fas fa-sack-dollar",
-                    label = "Access Bar Menu",
+                    label = t['accessBarMenu'],
                     args = {
                         canUse = true 
                     },
@@ -98,7 +98,7 @@ setupContext = function()
                         local ped = PlayerPedId()
                         local pos = GetEntityCoords(ped)
     
-                        local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)
+                        local barCoords = vector3(settings[k]['barSettings'].coords.x, settings[k]['barSettings'].coords.y, settings[k]['barSettings'].coords.z)
 
                         print(#(pos - barCoords))
                         if #(pos - barCoords) <= 10 then
@@ -114,18 +114,56 @@ setupContext = function()
             distance = 5.0,
         })
 
-        exports['qb-target']:AddTargetModel(settings[i]['bossSettings'].hash, {
+        exports['qb-target']:AddBoxZone("EnableDuty", settings[k]['duty'].coords, settings[k]['duty'].length, settings[k]['duty'].width, {
+            name="EnableDuty",
+            heading=settings[k]['duty'].heading,
+            debugPoly=false,
+            minZ = settings[k]['duty'].minZ,
+            maxZ = settings[k]['duty'].maxZ,
+            }, {
+                options = {
+                    {
+                        type = "client",
+                        event = "qb-vanillaunicorn:Client:signOn",
+                        icon = "fas fa-sign-in-alt",
+                        label = t['toggleDuty'],
+                        job = "vu",
+                    },
+                },
+            distance = 3.5
+        })
+
+        exports['qb-target']:AddBoxZone("StashVU", settings[k]['stash'].coords, settings[k]['stash'].length, settings[k]['stash'].width, {
+            name="StashVU",
+            heading=settings[k]['stash'].heading,
+            debugPoly=false,
+            minZ = settings[k]['stash'].minZ,
+            maxZ = settings[k]['stash'].maxZ,
+            }, {
+                options = {
+                    {
+                        type = "client",
+                        event = "qb-vanillaunicorn:Client:stash",
+                        icon = "fas fa-sign-in-alt",
+                        label = t['openStash'],
+                        job = "vu",
+                    },
+                },
+            distance = 3.5
+        })
+
+        exports['qb-target']:AddTargetModel(settings[k]['bossSettings'].hash, {
             options = {
                 {
                     event = "qb-vanillaunicorn:Client:employeeManagement",
                     icon = "fas fa-sack-dollar",
-                    label = "Open Employee Management",
-                    job = settings[i]['bossSettings'].bossJob,
+                    label = t['openEmployee'],
+                    job = settings[k]['bossSettings'].bossJob,
                     canInteract = function() -- Have yet to implement the actual job 
                         local ped = PlayerPedId()
                         local pos = GetEntityCoords(ped)
                        
-                        local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)
+                        local bossCoords = vector3(settings[k]['bossSettings'].coords.x, settings[k]['bossSettings'].coords.y, settings[k]['bossSettings'].coords.z)
                         if #(pos - bossCoords) <= 10 then
                             print("returning true") 
                             return true 
@@ -140,109 +178,4 @@ setupContext = function()
         })
 
     end
-
-    while true do
-        Wait(1000)
-        plyCoords = GetEntityCoords(ped)
-
-        for i, v in pairs(settings) do 
-            local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)  
-            local barHash = settings[i]['barSettings'].hash
-            local barHeading = settings[i]['barSettings'].coords.w
-
-            if #(plyCoords - barCoords) < 25 then
-                if not madeBar then  
-
-                    RequestModel(barHash)
-        
-                    while not HasModelLoaded(barHash) do
-                        Wait(1)
-                    end
-                    
-                    bartender = CreatePed(4, barHash , barCoords, barHeading, false, true)
-                    SetEntityAsMissionEntity(bartender, true, true)
-                    SetBlockingOfNonTemporaryEvents(bartender, true)
-                    FreezeEntityPosition(bartender, true)
-                    SetEntityInvincible(bartender, true)
-                    madeBar = true
-
-                    if Config.barPlayAnim then 
-                        local dict = "amb@world_human_hang_out_street@male_c@idle_a"
-            
-                        if not HasAnimDictLoaded(dict) then
-                            RequestAnimDict(dict)
-                            while not HasAnimDictLoaded(dict) do
-                                Wait(100)
-                            end
-                        end
-
-                        TaskPlayAnim(bartender, dict, "idle_b", 8.0, -8.0, -1, 1, 0, false, false, false)
-
-                        Wait(1000)
-                        RemoveAnimDict(dict)
-                    end
-
-                end
-            else
-                Wait(2000)
-                SetEntityAsNoLongerNeeded(bartender)
-                DeletePed(bartender)
-                madeBar = false  
-            end
-        end
-
-        for i, v in pairs(settings) do
-            if settings[i]['bossSettings'].spawnped then 
-                local bossCoords = vector3(settings[i]['bossSettings'].coords.x, settings[i]['bossSettings'].coords.y, settings[i]['bossSettings'].coords.z)  
-                local bossHash = settings[i]['bossSettings'].hash
-                local bossHeading = settings[i]['bossSettings'].coords.w
-                
-
-                if #(plyCoords - bossCoords) < 25 then 
-                    if not madeBoss then  
-
-                        RequestModel(bossHash)
-            
-                        while not HasModelLoaded(bossHash) do
-                            Wait(1)
-                        end
-                        
-                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, true)
-                        SetEntityAsMissionEntity(boss, true, true)
-                        SetBlockingOfNonTemporaryEvents(boss, true)
-                        FreezeEntityPosition(boss, true)
-                        SetEntityInvincible(boss, true)
-                        madeBoss = true
-                    end
-                else
-                    Wait(2000)
-                    SetEntityAsNoLongerNeeded(boss)
-                    DeletePed(boss)
-                    madeBoss = false  
-                end
-            end
-        end
-
-    end
 end  
-
-getClosestPlayer = function() -- Just taken from Qb-Policejob
-    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
-    local closestDistance = -1
-    local closestPlayer = -1
-    local coords = GetEntityCoords(PlayerPedId())
-
-    for i = 1, #closestPlayers, 1 do
-        if closestPlayers[i] ~= PlayerId() then
-            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
-            local distance = #(pos - coords)
-
-            if closestDistance == -1 or closestDistance > distance then
-                closestPlayer = closestPlayers[i]
-                closestDistance = distance
-            end
-        end
-    end
-
-    return closestPlayer, closestDistance
-end

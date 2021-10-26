@@ -11,6 +11,9 @@ This resource is simple, with the idea of feature requests and improvements bein
 - Completely Translatable
 - Fully commented
 - Almost everything is configureable
+- Stashes
+- Toggle Duty
+- Complete qb-target & qb-menu support
 
 ## Upcoming
 - DJ Job support (I'm adding a DJ Job, I just haven't finished it)

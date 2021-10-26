@@ -20,7 +20,6 @@ RegisterNetEvent('qb-vanillaunicorn:Server:handleItem', function(data)
     else
         print("Player with ID " .. source .. " attempted to give himself an item")
     end
-    
 end)
 
 QBCore.Commands.Add('invoice', 'Invoice A Player', {{

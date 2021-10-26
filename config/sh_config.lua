@@ -1,6 +1,6 @@
 Config = {}
 
-Config.debug = true -- Debug mode, disable on prod servers
+Config.debug = false -- Debug mode, disable on prod servers
 
 Config.Drinks = {
     ['coke'] = {
@@ -31,8 +31,21 @@ Config.Drinks = {
 
 Config.Settings = {
     ['vanillaUnicorn'] = {
-        ['duty'] = { -- On Duty Settings
-            vector3(1,1,1)
+        ['duty'] = { 
+            coords = vector3(96.12, -1292.81, 29.27), -- On Duty settings
+            minZ = 25, 
+            maxZ = 35,
+            length = 0.5,
+            width = 0.5,
+            heading = 120
+        },
+        ['stash'] = { 
+            coords = vector3(109.26, -1304.87, 28.77), -- Coords for worker stash
+            minZ = 25, 
+            maxZ = 35,
+            length = 4,
+            width = 0.5,
+            heading = 120
         },
         ['bossSettings'] = { -- Boss Action Settings
             hash = `a_m_y_business_02`,
@@ -74,10 +87,16 @@ Translation = {
         ['confirmDrink'] = "Are you sure you wish to purchase a ",
         ['yes'] = "Yes",
         ['no'] = "No",
+        ['accessBarMenu'] = "Access Bar Menu",
+        ['cost'] = "This will cost $", 
         -- Employee Management
         ['employeeTitle'] = "Boss Menu",
         ['employeeHire'] = "Open Boss Menu",
+        ['openEmployee'] = "Open Employee Management",
         ['employeeHireDesc'] = "Click here to open the boss menu",
         ['goBack'] = "< Go Back",
+        -- qb-target settings
+        ['toggleDuty'] = "Clock On/Clock Off",
+        ['openStash'] = "Open Stash",
     }
 }
