@@ -1,17 +1,21 @@
-# QBCore Vanilla Unicorn Job - In Development
-This is a Vanilla Unicorn Job designed exclusively for QBCore at the request of the community
+# QBCore Vanilla Unicorn Job
+This is a Vanilla Unicorn Job designed exclusively for QBCore at the request of the community.
+This resource is simple, with the idea of feature requests and improvements being added in the future.
 
 ## Requirements
 - [QBCore](https://github.com/qbcore-framework/qb-core)
-- [zf_context](https://github.com/zf-development/zf_context)
-
-## Showcase
-Coming Soon
+- [qb-menu](https://github.com/qbcore-framework/qb-menu)
+- [qb-target](https://github.com/BerkieBb/qb-target)
 
 ## Features
 - Completely Translatable
 - Fully commented
 - Almost everything is configureable
+
+## Upcoming
+- DJ Job support (I'm adding a DJ Job, I just haven't finished it)
+- Complete support for different types of clubs & bars (currently only supports the VU)
+- Completion of strippers, currently still a WIP
 
 ## Setup
 1) Add the following into your qb-core > shared.lua, under the Items section:
@@ -45,17 +49,11 @@ Coming Soon
 },
 ```
 
-3) If you've never edited qb-bossmenu before, or have never touched it in general, please install my fork of it:
-	<br>
-	3a) [qb-bossmenu](https://github.com/YeahItsHayden/qb-bossmenu) This fork has all of the VU stuff added by default for you.<br>
-	3b) If you have edited qb-bossmenu before, follow these steps:<br><br>
-		- go into accounts.json, add another account labelled "vu":0, it should then look something like so:<br><br>
-			```{"realestate":0,"ambulance":10,"police":1000000,"taxi":0,"cardealer":0,"mechanic":0,"vu":0}```<br><br>
-		- Once completed, go to your config.lua and add this:<br><br>
-			```['vu'] = vector3(93.84, -1291.87, 29.27)```<br><br>
-		- Finally, within client.lua on line 170 > where it says "if #(pos - v) < 2.0" add the following:<br><br>
-			```and not Config.Jobs['vu']``` so it should look like:<br><br> 	
-				```if #(pos - v) < 2.0 and not Config.Jobs['vu'] then```<br>
+3) You'll also need to setup the boss menu for this job, to do so, go to qb-bossmenu > config.lua and add the following:
+```lua
+['vu'] = vector3(93.57, -1292.3, 29.27)
+```
+to the end of the file, just under the mechanic job
 
 4) That's pretty much it, enjoy utilising the VU!
 
