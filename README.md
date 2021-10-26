@@ -62,3 +62,6 @@ to the end of the file, just under the mechanic job
 
 4) That's pretty much it, enjoy utilising the VU!
 
+## Issues?
+Having issues with the resource? Create an issue on the Github for support
+
