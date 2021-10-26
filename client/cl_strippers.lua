@@ -1,10 +1,6 @@
 -- Please don't read down, it's a mess
 -- Still very much a WIP that i'll do later
 
-CreateThread(function()
-    setupStrippers()
-end)
-
 stripperModelHash = `a_f_y_topless_01`
 madeStrippers = false 
 

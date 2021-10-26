@@ -1,7 +1,6 @@
 QBCore = exports['qb-core']:GetCoreObject()
-n = RegisterNetEvent -- I'm lazy
 
-n('qb-vanillaunicorn:handleItem', function(data)
+RegisterNetEvent('qb-vanillaunicorn:Server:handleItem', function(data)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = data.type 
@@ -22,4 +21,40 @@ n('qb-vanillaunicorn:handleItem', function(data)
         print("Player with ID " .. source .. " attempted to give himself an item")
     end
     
+end)
+
+QBCore.Commands.Add('invoice', 'Invoice A Player', {{
+    name = 'id',
+    help = 'Player ID'
+}, {
+    name = 'amount',
+    help = 'Invoice Amount'
+}}, false, function(source, args)
+    local worker = QBCore.Functions.GetPlayer(source)
+    local customer = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    local amount = tonumber(args[2])
+
+    if worker.PlayerData.job.name == "vu" then 
+        if customer then
+            if worker.PlayerData.citizenid ~= customer.PlayerData.citizenid then
+                if amount and amount > 0 then
+                    exports.oxmysql:insert(
+                        'INSERT INTO phone_invoices (citizenid, amount, society, sender, sendercitizenid) VALUES (?, ?, ?, ?, ?)',
+                        {customer.PlayerData.citizenid, amount, worker.PlayerData.job.name,
+                        worker.PlayerData.charinfo.firstname, worker.PlayerData.citizenid})
+                    TriggerClientEvent('qb-phone:RefreshPhone', customer.PlayerData.source)
+                    TriggerClientEvent('QBCore:Notify', source, 'Invoice Successfully Sent', 'success')
+                    TriggerClientEvent('QBCore:Notify', customer.PlayerData.source, 'New Invoice Received')
+                else
+                    TriggerClientEvent('QBCore:Notify', source, 'Must Be A Valid Amount Above 0', 'error')
+                end
+            else
+                TriggerClientEvent('QBCore:Notify', source, 'You Cannot Invoice Yourself', 'error')
+            end
+        else
+            TriggerClientEvent('QBCore:Notify', source, 'Player Not Online', 'error')
+        end
+    else
+        TriggerClientEvent('QBCore:Notify', source, 'No Access', 'error')
+    end
 end)

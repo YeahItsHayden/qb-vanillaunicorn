@@ -6,31 +6,30 @@ ped = PlayerPedId() -- Player ped
 settings = Config.Settings
 
 
-n('QBCore:Client:OnPlayerLoaded', function() -- Core stuff
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function() -- Core stuff
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
-n('QBCore:Client:OnJobUpdate', function(JobInfo) -- Core stuff
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo) -- Core stuff
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerData.job = JobInfo
 end)
 
 CreateThread(function() -- Thread to handle original context menu setup
-    while not LocalPlayer.state['isLoggedIn'] do
-        Wait(500)
-    end
-    if LocalPlayer.state['isLoggedIn'] then 
-        setupContext()
-    end
+    setupContext()
+    setupStrippers()
 end)
 
 if Config.debug then 
     RegisterCommand('hayden:test', function() -- debug command
         TriggerServerEvent('hayden:test')
+
+        billPlayer()
+
     end, false)
 end
 
-n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit checks
+RegisterNetEvent('qb-vanillaunicorn:Client:accessBarMenu', function(data) -- Access bar menu, exploit checks
     canUse = data.args.canUse
     plyCoords = GetEntityCoords(ped)
 
@@ -44,7 +43,7 @@ n('qb-vanillaunicorn:accessBarMenu', function(data) -- Access bar menu, exploit 
     end
 end)
 
-n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit check
+RegisterNetEvent('qb-vanillaunicorn:Client:purchaseDrink', function(data) -- purchase drinks, exploit check
     name = data.type.name
     price = data.type.price
 
@@ -59,7 +58,7 @@ n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit 
                 txt = 'This will cost $' .. price .. '',
                 params = {
                     isServer = true,
-                    event = "qb-vanillaunicorn:handleItem",
+                    event = "qb-vanillaunicorn:Server:handleItem",
                     args = {
                         type = data.type.item,
                         amount = data.type.amount, 
@@ -85,10 +84,10 @@ n('qb-vanillaunicorn:purchaseDrink', function(data) -- purchase drinks, exploit 
     end
 end)
 
-n('qb-vanillaunicorn:barMenu', function() -- Open bar menu
+RegisterNetEvent('qb-vanillaunicorn:Client:barMenu', function() -- Open bar menu
     exports["qb-menu"]:openMenu(drinks)
 end)
 
-n('qb-vanillaunicorn:employeeManagement', function() -- Open boss menu
+RegisterNetEvent('qb-vanillaunicorn:Client:employeeManagement', function() -- Open boss menu
     exports["qb-menu"]:openMenu(bossMenu)
 end)

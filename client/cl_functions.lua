@@ -27,7 +27,7 @@ setupContext = function()
             header = t['browseDrinks'],
             txt = t['browseDesc'],
             params = {
-                event = "qb-vanillaunicorn:barMenu",
+                event = "qb-vanillaunicorn:Client:barMenu",
             }
         },
     }
@@ -42,7 +42,7 @@ setupContext = function()
             header = t['coke'], -- Title of the drink
             txt = t['cokedesc'], -- short description
             params = {
-                event = "qb-vanillaunicorn:purchaseDrink",
+                event = "qb-vanillaunicorn:Client:purchaseDrink",
                 args = {
                     type = Config.Drinks['coke'], -- Ensure you also create a config for the drink
                 }
@@ -52,7 +52,7 @@ setupContext = function()
             header = t['whiskey'],
             txt = t['whiskeyDesc'],
             params = {
-                event = "qb-vanillaunicorn:purchaseDrink",
+                event = "qb-vanillaunicorn:Client:purchaseDrink",
                 args = {
                     type = Config.Drinks['whiskey'],
                 }
@@ -62,7 +62,7 @@ setupContext = function()
             header = t['rum'],
             txt = t['rumDesc'],
             params = {
-                event = "qb-vanillaunicorn:purchaseDrink", 
+                event = "qb-vanillaunicorn:Client:purchaseDrink", 
                 args = {
                     type = Config.Drinks['rum'],
                 }
@@ -72,7 +72,7 @@ setupContext = function()
             header = t['vodka'],
             txt = t['vodkaDesc'],
             params = {
-                event = "qb-vanillaunicorn:purchaseDrink",
+                event = "qb-vanillaunicorn:Client:purchaseDrink",
                 args = {
                     type = Config.Drinks['vodka'],
                 }
@@ -88,7 +88,7 @@ setupContext = function()
         exports['qb-target']:AddTargetModel(settings[i]['barSettings'].hash, {
             options = {
                 {
-                    event = "qb-vanillaunicorn:accessBarMenu",
+                    event = "qb-vanillaunicorn:Client:accessBarMenu",
                     icon = "fas fa-sack-dollar",
                     label = "Access Bar Menu",
                     args = {
@@ -117,7 +117,7 @@ setupContext = function()
         exports['qb-target']:AddTargetModel(settings[i]['bossSettings'].hash, {
             options = {
                 {
-                    event = "qb-vanillaunicorn:employeeManagement",
+                    event = "qb-vanillaunicorn:Client:employeeManagement",
                     icon = "fas fa-sack-dollar",
                     label = "Open Employee Management",
                     job = settings[i]['bossSettings'].bossJob,
@@ -159,7 +159,7 @@ setupContext = function()
                         Wait(1)
                     end
                     
-                    bartender = CreatePed(4, barHash , barCoords, barHeading, false, false)
+                    bartender = CreatePed(4, barHash , barCoords, barHeading, false, true)
                     SetEntityAsMissionEntity(bartender, true, true)
                     SetBlockingOfNonTemporaryEvents(bartender, true)
                     FreezeEntityPosition(bartender, true)
@@ -207,7 +207,7 @@ setupContext = function()
                             Wait(1)
                         end
                         
-                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, false)
+                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, true)
                         SetEntityAsMissionEntity(boss, true, true)
                         SetBlockingOfNonTemporaryEvents(boss, true)
                         FreezeEntityPosition(boss, true)
@@ -224,7 +224,7 @@ setupContext = function()
         end
 
     end
-end
+end  
 
 getClosestPlayer = function() -- Just taken from Qb-Policejob
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
