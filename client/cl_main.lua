@@ -1,8 +1,6 @@
 QBCore = exports['qb-core']:GetCoreObject() -- Core
 
-n = RegisterNetEvent -- I'm lazy
 t = Translation[Config.Translation] -- For translations (even lazier)
-ped = PlayerPedId() -- Player ped
 settings = Config.Settings
 onDuty = false
 
@@ -42,7 +40,7 @@ CreateThread(function() -- Thread to handle original context menu setup
    
     while true do
         Wait(0)
-        plyCoords = GetEntityCoords(ped)
+        plyCoords = GetEntityCoords(PlayerPedId())
 
         for k, v in pairs(settings) do
             local barCoords = vector3(settings[k]['barSettings'].coords.x, settings[k]['barSettings'].coords.y, settings[k]['barSettings'].coords.z)  
@@ -51,36 +49,19 @@ CreateThread(function() -- Thread to handle original context menu setup
 
             if #(plyCoords - barCoords) < 25 then
                 if not madeBar then  
-
                     RequestModel(barHash)
         
                     while not HasModelLoaded(barHash) do
                         Wait(1)
+                        RequestModel(barHash)
                     end
                     
-                    bartender = CreatePed(4, barHash , barCoords, barHeading, false, true)
+                    bartender = CreatePed(4, barHash , barCoords, barHeading, false, false)
                     SetEntityAsMissionEntity(bartender, true, true)
                     SetBlockingOfNonTemporaryEvents(bartender, true)
                     FreezeEntityPosition(bartender, true)
                     SetEntityInvincible(bartender, true)
                     madeBar = true
-
-                    if Config.barPlayAnim then 
-                        local dict = "amb@world_human_hang_out_street@male_c@idle_a"
-            
-                        if not HasAnimDictLoaded(dict) then
-                            RequestAnimDict(dict)
-                            while not HasAnimDictLoaded(dict) do
-                                Wait(100)
-                            end
-                        end
-
-                        TaskPlayAnim(bartender, dict, "idle_b", 8.0, -8.0, -1, 1, 0, false, false, false)
-
-                        Wait(1000)
-                        RemoveAnimDict(dict)
-                    end
-
                 end
             else
                 Wait(1000)
@@ -104,7 +85,7 @@ CreateThread(function() -- Thread to handle original context menu setup
                             Wait(1)
                         end
                         
-                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, false, true)
+                        boss = CreatePed(4, bossHash, bossCoords, bossHeading, true, false)
                         SetEntityAsMissionEntity(boss, true, true)
                         SetBlockingOfNonTemporaryEvents(boss, true)
                         FreezeEntityPosition(boss, true)
@@ -131,7 +112,7 @@ end
 
 RegisterNetEvent('qb-vanillaunicorn:Client:accessBarMenu', function(data) -- Access bar menu, exploit checks
     canUse = data.args.canUse
-    plyCoords = GetEntityCoords(ped)
+    plyCoords = GetEntityCoords(PlayerPedId())
 
     for i, v in pairs(settings) do
         local barCoords = vector3(settings[i]['barSettings'].coords.x, settings[i]['barSettings'].coords.y, settings[i]['barSettings'].coords.z)  
