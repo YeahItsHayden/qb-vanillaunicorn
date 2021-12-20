@@ -10,7 +10,6 @@ shared_scripts {
 }
 
 client_scripts {
-    'config/cl_config.lua',
 	'client/*.lua'
 }
 
